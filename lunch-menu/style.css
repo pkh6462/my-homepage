@@ -1,0 +1,431 @@
+/* ── 자주 쓰는 색을 한곳에 모아 둔 곳 ── */
+:root {
+  --background-color: #fff8f0;   /* 화면 배경 (따뜻한 아이보리) */
+  --card-color: #ffffff;         /* 카드 배경 */
+  --text-color: #2b2118;         /* 기본 글자 */
+  --soft-text-color: #8c7b6b;    /* 흐린 글자 */
+  --point-color: #ff7a2f;        /* 포인트 색 (주황) */
+  --point-light-color: #fff0e6;  /* 연한 주황 */
+  --line-color: #f0e4d6;         /* 테두리 */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ── 전체 화면 ── */
+body {
+  background: var(--background-color);
+  color: var(--text-color);
+  font-family: system-ui, "Malgun Gothic", sans-serif;
+  min-height: 100vh;
+}
+
+/* 왼쪽(추천)과 오른쪽(메뉴판)을 나란히 놓기 */
+.layout {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 56px 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  gap: 40px;
+  align-items: start;
+}
+
+/* ── 왼쪽: 추천받는 곳 ── */
+.recommend-area {
+  text-align: center;
+}
+
+h1 {
+  font-size: 30px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: var(--soft-text-color);
+  margin-bottom: 24px;
+}
+
+.filter-title {
+  font-size: 13px;
+  color: var(--soft-text-color);
+  margin-bottom: 8px;
+}
+
+/* ── 기분 · 종류 버튼 ── */
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.filter-button {
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--soft-text-color);
+  background: var(--card-color);
+  border: 1px solid var(--line-color);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* 고른 버튼은 주황색으로 표시 */
+.filter-button.selected {
+  color: #fff;
+  background: var(--point-color);
+  border-color: var(--point-color);
+}
+
+/* ── 추천 결과 카드 ── */
+.result-card {
+  padding: 36px 24px;
+  background: var(--card-color);
+  border: 1px solid var(--line-color);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(120, 80, 40, 0.08);
+  margin: 8px 0 20px;
+}
+
+.result-emoji {
+  font-size: 72px;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.result-name {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.result-description {
+  color: var(--soft-text-color);
+  font-size: 15px;
+}
+
+/* 메뉴를 고르는 동안 그림이 살짝 흔들려요 */
+.result-card.choosing .result-emoji {
+  animation: shake 0.15s infinite;
+}
+
+@keyframes shake {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(8deg); }
+}
+
+/* 최종 메뉴가 정해지면 톡 튀어나와요 */
+.result-card.decided {
+  animation: pop 0.4s ease;
+}
+
+@keyframes pop {
+  0%   { transform: scale(0.95); }
+  60%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+/* ── 근처 식당 찾기 버튼 ── */
+.map-links {
+  display: none;              /* 메뉴가 정해지기 전에는 숨겨요 */
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.map-links.visible {
+  display: flex;
+}
+
+.map-link {
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 10px;
+}
+
+.map-link.kakao {
+  color: #3c1e1e;
+  background: #fee500;
+}
+
+.map-link.naver {
+  color: #fff;
+  background: #03c75a;
+}
+
+/* ── 추천받기 버튼 ── */
+.recommend-button {
+  width: 100%;
+  padding: 18px;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--point-color);
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.1s, opacity 0.2s;
+}
+
+.recommend-button:active {
+  transform: scale(0.98);
+}
+
+.recommend-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* ── 식당 찾을 동네 ── */
+.area-setting {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--soft-text-color);
+}
+
+.area-setting span {
+  flex-shrink: 0;
+}
+
+.area-setting input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--text-color);
+  background: var(--card-color);
+  border: 1px solid var(--line-color);
+  border-radius: 10px;
+  outline: none;
+}
+
+.area-setting input:focus {
+  border-color: var(--point-color);
+}
+
+/* ── 최근 추천 기록 ── */
+.history {
+  margin-top: 32px;
+  text-align: left;
+}
+
+.history h2 {
+  font-size: 15px;
+  color: var(--soft-text-color);
+  margin-bottom: 10px;
+}
+
+.history-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.history-list li {
+  padding: 6px 12px;
+  font-size: 14px;
+  background: var(--card-color);
+  border: 1px solid var(--line-color);
+  border-radius: 8px;
+}
+
+.history-list .no-history {
+  color: var(--soft-text-color);
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* ── 오른쪽: 메뉴판 ── */
+.menu-board {
+  position: sticky;            /* 화면을 내려도 메뉴판은 따라와요 */
+  top: 24px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 24px;
+  background: var(--card-color);
+  border: 1px solid var(--line-color);
+  border-radius: 20px;
+}
+
+.menu-board-title {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.menu-board-count {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--soft-text-color);
+}
+
+.menu-board-help {
+  font-size: 13px;
+  color: var(--soft-text-color);
+  margin-bottom: 16px;
+}
+
+/* 메뉴판의 종류 제목 (한식, 중식 …) */
+.menu-board-category {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--point-color);
+  margin: 16px 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--line-color);
+}
+
+.menu-board-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* 메뉴판의 메뉴 하나 */
+.menu-board-item {
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text-color);
+  background: var(--background-color);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+/* 마우스를 올렸을 때만 테두리 표시 (휴대폰에서 누른 뒤 테두리가 남지 않게) */
+@media (hover: hover) {
+  .menu-board-item:hover {
+    border-color: var(--point-color);
+  }
+}
+
+/* 지금 카드에 나온 메뉴는 메뉴판에서도 표시 */
+.menu-board-item.chosen {
+  color: var(--point-color);
+  background: var(--point-light-color);
+  border-color: var(--point-color);
+  font-weight: 700;
+}
+
+.menu-board-empty {
+  color: var(--soft-text-color);
+  font-size: 14px;
+  padding: 24px 0;
+  text-align: center;
+}
+
+/* 휴대폰에서 버튼을 누를 때 생기는 파란 깜빡임 없애기 */
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── 좁은 화면(휴대폰 · 태블릿) ── */
+@media (max-width: 860px) {
+  /* 메뉴판을 아래로 내리고, 맨 아래 고정 버튼 자리만큼 여백 두기 */
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding: 32px 16px calc(110px + env(safe-area-inset-bottom));
+  }
+
+  h1 {
+    font-size: 26px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  /* 기분 · 종류 버튼을 3칸씩 반듯하게 (한 줄에 버튼 하나만 떨어지지 않게) */
+  .filter-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .filter-button {
+    min-height: 42px;            /* 손가락으로 누르기 편한 크기 */
+    padding: 8px 4px;
+    white-space: nowrap;
+  }
+
+  /* 결과 카드를 조금 작게 */
+  .result-card {
+    padding: 28px 16px;
+  }
+
+  .result-emoji {
+    font-size: 60px;
+  }
+
+  .result-name {
+    font-size: 26px;
+  }
+
+  /* 지도 버튼은 나란히 반씩 */
+  .map-links.visible {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .map-link {
+    padding: 12px 6px;
+    font-size: 13px;
+  }
+
+  /* 추천 버튼은 화면 맨 아래에 늘 떠 있게 (어디서든 엄지로 바로 누르기) */
+  .recommend-button {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    width: auto;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(255, 122, 47, 0.35);
+  }
+
+  /* 아이폰은 글자가 16px보다 작은 입력칸을 누르면 화면을 확대해요. 그래서 16px로 */
+  .area-setting input {
+    font-size: 16px;
+  }
+
+  .area-setting {
+    margin-top: 0;
+  }
+
+  .menu-board {
+    position: static;
+    max-height: none;
+    padding: 20px 16px;
+  }
+
+  .menu-board-item {
+    padding: 8px 10px;           /* 손가락으로 누르기 편하게 조금 크게 */
+  }
+}
+
+/* 움직임을 줄이도록 설정한 사람에게는 애니메이션을 꺼요 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

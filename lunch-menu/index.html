@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오늘 점심 뭐 먹지?</title>
+  <!-- 휴대폰 위쪽 상태 표시줄 색 -->
+  <meta name="theme-color" content="#fff8f0">
+  <!-- 휴대폰 "홈 화면에 추가" 했을 때 보일 이름 -->
+  <meta name="apple-mobile-web-app-title" content="점심 추천">
+  <!-- 브라우저 탭 아이콘 (그림 파일 없이 이모지로) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>">
+  <!-- 디자인(색, 크기, 배치)은 style.css에 있어요 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+
+    <!-- ───── 왼쪽: 추천받는 곳 ───── -->
+    <main class="recommend-area">
+      <h1>오늘 점심 뭐 먹지?</h1>
+      <p class="subtitle">기분과 종류를 고르고 버튼을 눌러 보세요.</p>
+
+      <!-- 오늘의 기분 고르는 버튼들 (script.js가 채워 넣어요) -->
+      <p class="filter-title">오늘의 기분</p>
+      <div id="mood-buttons" class="filter-buttons"></div>
+
+      <!-- 음식 종류 고르는 버튼들 (script.js가 채워 넣어요) -->
+      <p class="filter-title">음식 종류</p>
+      <div id="category-buttons" class="filter-buttons"></div>
+
+      <!-- 추천 결과가 나오는 카드 -->
+      <section id="result-card" class="result-card">
+        <div id="result-emoji" class="result-emoji">🍽️</div>
+        <div id="result-name" class="result-name">버튼을 눌러 주세요</div>
+        <div id="result-description" class="result-description">오늘의 점심을 골라 드릴게요.</div>
+
+        <!-- 근처 식당 찾기 (메뉴가 정해지면 나타나요) -->
+        <div id="map-links" class="map-links">
+          <a id="kakao-map-link" class="map-link kakao" target="_blank" rel="noopener">카카오맵으로 찾기</a>
+          <a id="naver-map-link" class="map-link naver" target="_blank" rel="noopener">네이버지도로 찾기</a>
+        </div>
+      </section>
+
+      <!-- 추천받기 버튼 -->
+      <button id="recommend-button" class="recommend-button">메뉴 추천받기</button>
+
+      <!-- 식당 찾을 동네 (한 번 적어 두면 기억해요) -->
+      <label class="area-setting">
+        <span>식당 찾을 동네</span>
+        <input id="area-input" type="text" placeholder="예: 정남면, 강남역" autocomplete="off">
+      </label>
+
+      <!-- 최근에 추천받은 메뉴 -->
+      <section class="history">
+        <h2>최근 추천</h2>
+        <ul id="history-list" class="history-list"></ul>
+      </section>
+    </main>
+
+    <!-- ───── 오른쪽: 메뉴판 ───── -->
+    <aside class="menu-board">
+      <h2 class="menu-board-title">메뉴판 <span id="menu-board-count" class="menu-board-count"></span></h2>
+      <p class="menu-board-help">고른 기분·종류에 맞는 메뉴만 보여요. 눌러서 바로 고를 수도 있어요.</p>
+      <div id="menu-board-list"></div>
+    </aside>
+
+  </div>
+
+  <!-- 동작(메뉴 고르기, 기록 남기기, 식당 찾기)은 script.js에 있어요 -->
+  <script src="script.js"></script>
+</body>
+</html>
